@@ -1,7 +1,7 @@
 # wlsw-shiro-spring-boot-starter
-forked from sjets
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+forked from sjets
 #### 项目说明
 
 springboot中使用shiro大都是通过shiro-spring.jar进行的整合的,虽然不是太复杂，但是也无法做到spring-boot-starter风格的开箱即用。
