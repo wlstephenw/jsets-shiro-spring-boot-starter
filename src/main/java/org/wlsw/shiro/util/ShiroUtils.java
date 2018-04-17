@@ -38,15 +38,14 @@ import org.wlsw.shiro.model.Account;
 import org.wlsw.shiro.model.StatelessLogined;
 import org.wlsw.shiro.realm.RealmManager;
 import org.wlsw.shiro.service.ShiroCryptoService;
+import org.wlsw.shiro.service.SimpleTokenManager;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 /**
  * SHIRO工具
- * 
- * @author wangjie (https://github.com/wj596)
- * @date 2016年6月31日
+ *
  *
  */
 public class ShiroUtils {
@@ -60,6 +59,7 @@ public class ShiroUtils {
 	private static RealmManager realmManager;
 	private static ShiroFilterFactoryBean shiroFilterFactoryBean;
 	private static FilterManager filterManager;
+	private static SimpleTokenManager simpleTokenManager;
 	
 
 	/**
@@ -81,6 +81,18 @@ public class ShiroUtils {
 	 */
 	public static String issueJwt(String subject,String issuer,Long period,String roles,String permissions,SignatureAlgorithm algorithm) {
 		return CryptoUtil.issueJwt(shiroProperties.getJwtSecretKey(),subject,issuer,period,roles,permissions,algorithm);
+	}
+
+	public static String issueJwt(String subject, Long period) {
+		String jwt = CryptoUtil.issueJwt(ShiroUtils.getShiroProperties().getJwtSecretKey()
+				, subject
+				, subject
+				, period
+				, null
+				, null
+				, SignatureAlgorithm.HS512);
+
+		return jwt;
 	}
 	/**
 	 * 验签JWT
@@ -212,7 +224,17 @@ public class ShiroUtils {
 		filterManager.reloadFilterChain(shiroFilterFactoryBean);
 	}
 
-	
+
+	public static String issueToken(String user, Long period) {
+		if (shiroProperties.isJwtEnabled()) {
+			return issueJwt(user, period);
+		} else if (shiroProperties.isHmacEnabled()) {
+			return ""; //TODO
+		} else {
+			return simpleTokenManager.createToken(user).toString();
+		}
+	}
+
 	public static ShiroProperties getShiroProperties() {
 		return shiroProperties;
 	}
@@ -234,7 +256,11 @@ public class ShiroUtils {
 	public static FilterManager getFilterManager() {
 		return filterManager;
 	}
-	
+
+	public static void setSimpleTokenManager(SimpleTokenManager simpleTokenManager) {
+		ShiroUtils.simpleTokenManager = simpleTokenManager;
+	}
+
 	public static void setShiroProperties(ShiroProperties shiroProperties) {
 		ShiroUtils.shiroProperties = shiroProperties;
 	}

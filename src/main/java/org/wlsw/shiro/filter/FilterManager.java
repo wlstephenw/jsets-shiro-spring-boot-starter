@@ -44,9 +44,7 @@ import java.util.stream.Stream;
 
 /**
  * FILTER 管理器
- * 
- * @author wangjie (https://github.com/wj596)
- * @date 2016年6月31日
+ *
  */
 public class FilterManager {
 	
@@ -83,7 +81,11 @@ public class FilterManager {
 		formFilter.setProperties(this.properties);
 		formFilter.setMessages(this.messages);
 		this.statefulFilters.putIfAbsent(Commons.FILTER_AUTHC, formFilter);
-		
+		MobileCodeAuthenticationFilter mobileCodeAuthenticationFilter = new MobileCodeAuthenticationFilter();
+		this.statefulFilters.putIfAbsent(Commons.FILTER_MAUTHC, mobileCodeAuthenticationFilter);
+		SimpleTokenAuthenticationFilter simpleTokenAuthenticationFilter = new SimpleTokenAuthenticationFilter();
+		this.statelessFilters.putIfAbsent(Commons.FILTER_STOKEN, simpleTokenAuthenticationFilter);
+
 		if (properties.isJcaptchaEnable()) {
 			JcaptchaFilter jcaptchaFilter = new JcaptchaFilter();
 			this.statefulFilters.putIfAbsent(Commons.FILTER_JCAPTCHA, jcaptchaFilter);

@@ -29,9 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * cache功能委托类
- * 
- * @author wangjie (https://github.com/wj596)
- * @date 2016年6月31日
+ *
  */
 public class CacheDelegator {
 
@@ -110,6 +108,11 @@ public class CacheDelegator {
 	public void setCacheManager(CacheManager cacheManager) {
 		this.cacheManager = cacheManager;
 	}
+
+    public CacheManager getCacheManager() {
+        return cacheManager;
+    }
+
 	public void setCacheType(short cacheType) {
 		this.cacheType = cacheType;
 	}

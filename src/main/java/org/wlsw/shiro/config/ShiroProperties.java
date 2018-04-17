@@ -79,7 +79,7 @@ public class ShiroProperties {
 	public static final String PARAM_HMAC_APP_ID = "hmac_app_id";
 	public static final String PARAM_HMAC_TIMESTAMP = "hmac_timestamp";
 	public static final String PARAM_HMAC_DIGEST = "hmac_digest";
-	public static final String PARAM_JWT = "jwt";
+    public static final String PARAM_JWT = "token";
 	
 	
 	

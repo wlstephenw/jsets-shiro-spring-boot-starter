@@ -19,6 +19,7 @@ package org.wlsw.shiro.config;
 
 import com.google.common.collect.Lists;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.CodecSupport;
@@ -49,7 +50,10 @@ import org.wlsw.shiro.cache.SpringCacheManager;
 import org.wlsw.shiro.filter.FilterManager;
 import org.wlsw.shiro.handler.DefaultSessionListener;
 import org.wlsw.shiro.realm.RealmManager;
+import org.wlsw.shiro.service.CacheSimpleTokenManager;
 import org.wlsw.shiro.service.ShiroCryptoService;
+import org.wlsw.shiro.service.SimpleTokenManager;
+import org.wlsw.shiro.token.SimpleToken;
 import org.wlsw.shiro.util.Commons;
 import org.wlsw.shiro.util.ShiroUtils;
 
@@ -59,8 +63,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * SHIRO构造器
  *
- * @author wangjie (https://github.com/wj596)
- * @date 2016年6月31日
  */
 public class JsetsShiroManager {
 	
@@ -80,6 +82,7 @@ public class JsetsShiroManager {
 	private DefaultWebSecurityManager securityManager;
 	private ShiroFilterFactoryBean shiroFilterFactoryBean;
 	private ShiroCryptoService cryptoService;
+	private SimpleTokenManager simpleTokenManager;
 	private short cacheType = Commons.CACHE_TYPE_MAP;
 	private final AtomicBoolean initialized = new AtomicBoolean(Boolean.FALSE);
 
@@ -147,7 +150,7 @@ public class JsetsShiroManager {
 		} 
 		// 使用Spring CacheManager
 		DefaultListableBeanFactory listableBeanFactory = (DefaultListableBeanFactory) this.beanFactory;
-		if (listableBeanFactory.getBeanNamesForType(org.springframework.cache.CacheManager.class).length>0) {
+		if (listableBeanFactory.getBeanNamesForType(org.springframework.cache.CacheManager.class).length == 1) {
 			org.springframework.cache.CacheManager springCacheManager = 
 								listableBeanFactory.getBean(org.springframework.cache.CacheManager.class);
 			
@@ -210,6 +213,10 @@ public class JsetsShiroManager {
 		realmManager.setJsetsPasswdMatcher(this.passwdMatcher);
 		realmManager.setShiroCryptoService(this.cryptoService);
 		realmManager.setAccountProvider(this.managerConfig.getAccountProvider());
+		realmManager.setMobileCodeProvider(this.managerConfig.getMobileCodeProvider());
+		Cache<String, SimpleToken> cache = this.getCacheManager().getCache("token");
+		simpleTokenManager = new CacheSimpleTokenManager(cache);
+		realmManager.setSimpleTokenManager(simpleTokenManager);
 		realmManager.setCustomRealms(this.managerConfig.getRealms());
 		realmManager.setStatelessAccountProvider(this.managerConfig.getStatelessAccountProvider());
 		realmManager.setMessages(MessageConfig.ins());
@@ -291,6 +298,7 @@ public class JsetsShiroManager {
 		ShiroUtils.setShiroCacheDelegator(this.cacheDelegator);
 		ShiroUtils.setShiroFilterFactoryBean(this.shiroFilterFactoryBean);
 		ShiroUtils.setShiroProperties(this.properties);
+		ShiroUtils.setSimpleTokenManager(simpleTokenManager);
 	}
 
 

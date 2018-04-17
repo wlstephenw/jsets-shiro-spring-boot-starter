@@ -58,6 +58,7 @@ public abstract class Commons {
 	public static final String JCAPTCHA_URL = "/jcaptcha.jpg";
 	public static final String FILTER_ANON = "anon";
 	public static final String FILTER_AUTHC = "authc";
+    public static final String FILTER_MAUTHC = "mauthc";
 	public static final String FILTER_JCAPTCHA = "jcaptcha";
 	public static final String FILTER_ROLES = "roles";
 	public static final String FILTER_PERMS = "perms";
@@ -70,6 +71,7 @@ public abstract class Commons {
 	public static final String FILTER_JWT = "jwt";
 	public static final String FILTER_JWT_ROLES = "jwtRoles";
 	public static final String FILTER_JWT_PERMS = "jwtPerms";
+    public static final String FILTER_STOKEN = "stoken";
 	
 	public static final short CACHE_TYPE_MAP = 0;
 	public static final short CACHE_TYPE_EHCACHE = 1;

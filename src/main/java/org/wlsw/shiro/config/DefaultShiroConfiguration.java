@@ -21,12 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.wlsw.shiro.service.DefaultAccountProvider;
+import org.wlsw.shiro.service.DefaultMobileCodeProvider;
 import org.wlsw.shiro.service.ShiroCryptoService;
 /**
  * 默认配置
  *
- * @author wangjie (https://github.com/wj596)
- * @date 2016年6月31日
  */
 @Configuration
 @ConditionalOnMissingBean(JsetsShiroConfigurationAdapter.class)
@@ -37,11 +36,10 @@ public class DefaultShiroConfiguration extends JsetsShiroConfigurationAdapter{
 	
 	@Override
 	protected void configure(SecurityManagerConfig securityManager) {
-		System.out.println("欢迎使用： jsets-shiro-spring-boot-starter");
-		System.out.println("已为您创建体验账号： test,密码test");
 		DefaultAccountProvider defAccountProvider = new DefaultAccountProvider();
 		defAccountProvider.setShiroCryptoService(shiroCryptoService);
 		securityManager.setAccountProvider(defAccountProvider);
+		securityManager.setMobileCodeProvider(new DefaultMobileCodeProvider());
 	}
 
 	@Override

@@ -24,19 +24,19 @@ import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.wlsw.shiro.handler.PasswdRetryLimitHandler;
+import org.wlsw.shiro.service.MobileCodeProvider;
 import org.wlsw.shiro.service.ShiroAccountProvider;
 import org.wlsw.shiro.service.ShiroStatelessAccountProvider;
 
 import java.util.List;
 /**
  * shiro 组件配置
- * 
- * @author wangjie (https://github.com/wj596)
- * @date 2016年6月31日
+ *
  */
 public class SecurityManagerConfig {
 
 	private ShiroAccountProvider accountProvider;
+    private MobileCodeProvider mobileCodeProvider;
 	private ShiroStatelessAccountProvider statelessAccountProvider;
 	private PasswdRetryLimitHandler passwdRetryLimitHandler;
 	private SimpleCookie rememberMeCookie;
@@ -56,6 +56,14 @@ public class SecurityManagerConfig {
 	public void setAccountProvider(ShiroAccountProvider accountProviderImpl) {
 		this.accountProvider = accountProviderImpl;
 	}
+
+    public MobileCodeProvider getMobileCodeProvider() {
+        return mobileCodeProvider;
+    }
+
+    public void setMobileCodeProvider(MobileCodeProvider mobileCodeProvider) {
+        this.mobileCodeProvider = mobileCodeProvider;
+    }
 	/**
 	 * 设置密码错误次数超限处理器
 	 * @param passwdRetryLimitHandlerImpl  see org.jsets.shiro.service.PasswdRetryLimitHandler

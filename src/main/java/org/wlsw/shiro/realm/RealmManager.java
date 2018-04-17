@@ -26,10 +26,7 @@ import org.wlsw.shiro.authc.JsetsPasswdMatcher;
 import org.wlsw.shiro.cache.CacheDelegator;
 import org.wlsw.shiro.config.MessageConfig;
 import org.wlsw.shiro.config.ShiroProperties;
-import org.wlsw.shiro.service.DefaultStatelessAccountProvider;
-import org.wlsw.shiro.service.ShiroAccountProvider;
-import org.wlsw.shiro.service.ShiroCryptoService;
-import org.wlsw.shiro.service.ShiroStatelessAccountProvider;
+import org.wlsw.shiro.service.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +44,8 @@ public class RealmManager {
 	private JsetsPasswdMatcher jsetsPasswdMatcher;
 	private ShiroCryptoService shiroCryptoService;
 	private ShiroAccountProvider accountProvider;
+	private MobileCodeProvider mobileCodeProvider;
+	private SimpleTokenManager simpleTokenManager;
 	private ShiroStatelessAccountProvider statelessAccountProvider;
 	private List<Realm> customRealms;
 	private CacheDelegator cacheDelegator;
@@ -77,6 +76,13 @@ public class RealmManager {
 			passwdRealm.setCachingEnabled(Boolean.FALSE);
 		}
 		this.addStatefulRealms(passwdRealm);
+
+		MobileCodeRealm mobileCodeRealm = new MobileCodeRealm(mobileCodeProvider, accountProvider);
+		this.addStatefulRealms(mobileCodeRealm);
+
+		TokenShiroRealm tokenShiroRealm = new TokenShiroRealm(accountProvider, simpleTokenManager);
+		this.addStatelessRealms(tokenShiroRealm);
+
 		if (this.properties.isHmacEnabled()) {
 			JsetsHmacMatcher hmacMatcher = new JsetsHmacMatcher();
 			hmacMatcher.setAccountProvider(this.statelessAccountProvider);
@@ -167,6 +173,15 @@ public class RealmManager {
 	public void setStatelessAccountProvider(ShiroStatelessAccountProvider statelessAccountProvider) {
 		this.statelessAccountProvider = statelessAccountProvider;
 	}
+
+	public void setMobileCodeProvider(MobileCodeProvider mobileCodeProvider) {
+		this.mobileCodeProvider = mobileCodeProvider;
+	}
+
+	public void setSimpleTokenManager(SimpleTokenManager simpleTokenManager) {
+		this.simpleTokenManager = simpleTokenManager;
+	}
+
 	public void setCustomRealms(List<Realm> customRealms) {
 		this.customRealms = customRealms;
 	}

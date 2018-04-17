@@ -82,13 +82,15 @@ public abstract class StatelessFilter extends AccessControlFilter{
 	}
 	
 	protected boolean isJwtSubmission(ServletRequest request) {
-		String jwt = request.getParameter(ShiroProperties.PARAM_JWT);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String jwt = httpRequest.getHeader(ShiroProperties.PARAM_JWT);
 		return (request instanceof HttpServletRequest) && !Strings.isNullOrEmpty(jwt);
 	}
 	
 	protected AuthenticationToken createJwtToken(ServletRequest request, ServletResponse response) {
 		String host = request.getRemoteHost();
-		String jwt = request.getParameter(ShiroProperties.PARAM_JWT);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String jwt = httpRequest.getHeader(ShiroProperties.PARAM_JWT);
 		return new JwtToken(host,jwt);
 	}
 	
@@ -119,7 +121,7 @@ public abstract class StatelessFilter extends AccessControlFilter{
 	}
 	
 	@Override
-	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) {
         Subject subject = getSubject(request, response);
         //未认证
         if (null == subject || !subject.isAuthenticated()) {

@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.wlsw.shiro.service.ShiroCryptoService;
 import org.wlsw.shiro.service.ShiroSecurityService;
+
 /**
  * shiro自动配置
  * 

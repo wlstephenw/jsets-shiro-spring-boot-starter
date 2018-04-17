@@ -30,9 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 /**
  * 安全加密相关工具类
- * 
- * @author wangjie (https://github.com/wj596)
- * @date 2016年6月31日
+ *
  */
 public abstract class CryptoUtil {
 	
